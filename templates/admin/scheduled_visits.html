@@ -1,0 +1,788 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+{% block links %}
+<!-- favicon start -->
+<link rel="icon" type="image/png" href="{% static 'admin_assets/images/favicon/favicon-96x96.png' %}" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="{% static 'admin_assets/images/favicon/favicon.svg' %}" />
+<link rel="shortcut icon" href="{% static 'admin_assets/images/favicon/favicon.ico' %}" />
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'admin_assets/images/favicon/apple-touch-icon.png' %}" />
+<meta name="apple-mobile-web-app-title" content="MyWebSite" />
+<link rel="manifest" href="{% static 'admin_assets/images/favicon/site.webmanifest' %}" />
+<!-- favicon end -->
+
+<!-- plugin css -->
+<link href="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css' %}"
+  rel="stylesheet" type="text/css" />
+
+<!-- preloader css -->
+<link rel="stylesheet" href="{% static 'admin_assets/css/preloader.min.css' %}" type="text/css" />
+
+<!-- Bootstrap Css -->
+<link href="{% static 'admin_assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+
+<!-- Icons Css -->
+<link href="{% static 'admin_assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- App Css-->
+<link href="{% static 'admin_assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="{% static 'admin_assets/css/AeonikFont.css' %}">
+
+<!-- datatable -->
+<link rel="stylesheet" href="{% static 'admin_assets/css/datatable.min.css' %}">
+
+<!-- Custom Enhanced Styles -->
+<style>
+  :root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    --dark-color: #1f2937;
+    --light-bg: #f8fafc;
+    --border-color: #e5e7eb;
+    --text-muted: #6b7280;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+  }
+
+  .page-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px 0;
+  }
+
+  .container-fluid {
+    background: var(--light-bg);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .page-title-box {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--primary-color);
+  }
+
+  .page-title-box h4 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .breadcrumb {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+  }
+
+  .breadcrumb-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .breadcrumb-item.active {
+    color: var(--text-muted);
+  }
+
+  .card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  .card-body {
+    padding: 0;
+  }
+
+  .table {
+    margin: 0;
+    background: white;
+  }
+
+  .table thead th {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white;
+    border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    padding: 15px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .table tbody tr:hover {
+    background: linear-gradient(135deg, #f8faff, #f1f5f9);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .table td {
+    padding: 15px 12px;
+    border: none;
+    vertical-align: middle;
+  }
+
+  .userName {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin: 0;
+  }
+
+  .profileul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .profileul li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .profileul li img {
+    opacity: 0.7;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .bg-success {
+    background: linear-gradient(135deg, var(--success-color), #059669) !important;
+    color: white !important;
+  }
+
+  .bg-warning {
+    background: linear-gradient(135deg, var(--warning-color), #d97706) !important;
+    color: white !important;
+  }
+
+  .btnupdate {
+    background: linear-gradient(135deg, var(--info-color), #2563eb);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-approve {
+    background: linear-gradient(135deg, var(--success-color), #059669);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 8px;
+  }
+
+  .btn-approve:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    color: white;
+  }
+
+  .btn-approve:disabled {
+    background: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .smallicon {
+    width: 14px;
+    height: 14px;
+    filter: brightness(0) invert(1);
+  }
+
+  /* Modal Enhancements */
+  .modal-content {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+  }
+
+  .modal-title {
+    font-weight: 600;
+  }
+
+  .btn-close {
+    filter: brightness(0) invert(1);
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 8px;
+  }
+
+  .form-control {
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px 12px;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--success-color), #059669);
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-success:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+
+  /* Pagination Styles */
+  .pagination-wrapper {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .pagination-info {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .pagination {
+    margin: 0;
+  }
+
+  .page-link {
+    color: var(--primary-color);
+    border: 2px solid var(--border-color);
+    padding: 8px 12px;
+    margin: 0 2px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .page-link:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    border-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+  }
+
+  .page-item.disabled .page-link {
+    background: var(--light-bg);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container-fluid {
+      padding: 15px;
+    }
+    
+    .table-responsive {
+      border-radius: var(--border-radius);
+    }
+    
+    .pagination-wrapper {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  /* Loading Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .table tbody tr {
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  /* Search and Filter Section */
+  .filter-section {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .filter-section .form-control {
+    border-radius: 25px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Start right Content here -->
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+      <!-- Page Title -->
+      <div class="row">
+        <div class="col-12">
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">📅 Scheduled Visits</h4>
+            <div class="page-title-right">
+              <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Scheduled Visits</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="filter-section">
+        <div class="row">
+          <div class="col-md-6">
+            <input type="text" class="form-control" id="searchInput" placeholder="🔍 Search by user name, email, or property...">
+          </div>
+          <div class="col-md-3">
+            <select class="form-control" id="statusFilter">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <select class="form-control" id="recordsPerPage">
+              <option value="10">10 per page</option>
+              <option value="25">25 per page</option>
+              <option value="50">50 per page</option>
+              <option value="100">100 per page</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookings Table -->
+      <div class="dataTableSec listtable">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover" id="bookingsTable">
+                <thead class="table-sticky-top">
+                  <tr>
+                    <th>S.No.</th>
+                    <th>👤 User</th>
+                    <th>📞 Contact</th>
+                    <th>🏢 Property</th>
+                    <th>🏠 Type</th>
+                    <th>📅 Date</th>
+                    <th>📊 Status</th>
+                    <th>⚡ Action</th>
+                  </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                  {% for visit in visits %}
+                  <tr data-search="{{ visit.user.name|lower }} {{ visit.user.email|lower }} {{ visit.apartment.property_name|lower }}" 
+                      data-status="{{ visit.status|lower }}">
+                    <td><strong>{{ forloop.counter }}</strong></td>
+                    <td>
+                      <h3 class="userName">{{ visit.user.name }}</h3>
+                    </td>
+                    <td>
+                      <ul class="profileul">
+                        <li>
+                          <img src="{% static 'admin_assets/images/icons/email-line.svg' %}" style="width: 18px;">
+                          {{ visit.user.email }}
+                        </li>
+                        <li>
+                          <img src="{% static 'admin_assets/images/icons/location-line.svg' %}" style="width: 18px;">
+                          {{ visit.user.addr|default:"No address provided" }}
+                        </li>
+                        <li>
+                          <img src="{% static 'admin_assets/images/icons/location-line.svg' %}" style="width: 18px;">
+                          {{ visit.user.phn|default:"No address provided" }}
+                        </li>
+                      </ul>
+                    </td>
+                    <td>
+                      <a href="javascript:void(0)" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">
+                        {{ visit.apartment.property_name }}
+                      </a>
+                    </td>
+                    <td>
+                      <span style="background: #e0f2fe; color: #01579b; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                        {{ visit.apartment.type }}
+                      </span>
+                    </td>
+                    <td>
+                      <strong>{{ visit.visit_date_str }}</strong>
+                    </td>
+                    <td>
+                      {% if visit.status == 'approved' %}
+                      <span class="badge bg-success">✅ approved</span>
+                      {% elif visit.status == 'pending' %}
+                      <span class="badge bg-warning">⏳ {{ visit.status|title }}</span>
+                      {% else %}
+                      <span class="badge" style="background: var(--danger-color);">❌ {{ visit.status|title }}</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if visit.status != 'approved' %}
+                      <a class="btn-approve" href="{% url 'approve_visit' visit.visit_id %}">
+                        <img class="smallicon" src="{% static 'admin_assets/images/icons/check.svg' %}" alt="">
+                        Approve
+                      </a>
+                      {% endif %}
+                      <a class="btnupdate btnnor" href="javascript:void(0);" 
+                         data-id="{{ visit.id }}" 
+                         data-bs-toggle="modal" 
+                         data-bs-target="#updateVisitModal">
+                        <img class="smallicon" src="{% static 'admin_assets/images/icons/edit.svg' %}" alt="">
+                        Update
+                      </a>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="8" class="text-center" style="padding: 40px; color: var(--text-muted);">
+                      <h5>📭 No bookings found</h5>
+                      <p>No booking records are available at the moment.</p>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-wrapper">
+        <div class="pagination-info">
+          <span id="paginationInfo">Showing <strong>1-10</strong> of <strong>{{ visits|length }}</strong> results</span>
+        </div>
+        <nav aria-label="Bookings pagination">
+          <ul class="pagination" id="pagination">
+            <!-- Pagination will be generated by JavaScript -->
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Update Visit Modal -->
+      <div class="modal fade" id="updateVisitModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <form method="POST" action="{% url 'update_visit' %}">
+            {% csrf_token %}
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">📅 Update Visit Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" name="visit_id" id="visitIdInput">
+                <div class="mb-3">
+                  <label class="form-label">📅 Visit Date</label>
+                  <input type="date" class="form-control" name="visit_date" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">🕐 Visit Time</label>
+                  <input type="time" class="form-control" name="visit_time" required>
+                </div>
+                <div class="alert alert-info" style="border: none; background: #e3f2fd; color: #01579b; border-radius: 6px;">
+                  <strong>Note:</strong> Updating will automatically approve this booking.
+                </div>
+              </div>
+              <div class="modal-footer" style="border: none; padding-top: 0;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background: #6b7280; border: none;">Cancel</button>
+                <button type="submit" class="btn btn-success">✅ Update & Approve</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- JAVASCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal functionality
+    const updateButtons = document.querySelectorAll('.btnupdate');
+    updateButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const visitId = this.getAttribute('data-id');
+            document.getElementById('visitIdInput').value = visitId;
+        });
+    });
+
+    // Pagination and filtering functionality
+    let currentPage = 1;
+    let recordsPerPage = 10;
+    const tableBody = document.getElementById('bookingsTableBody');
+    const allRows = Array.from(tableBody.querySelectorAll('tr[data-search]'));
+    let filteredRows = [...allRows];
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
+    const recordsPerPageSelect = document.getElementById('recordsPerPage');
+
+    function filterTable() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusValue = statusFilter.value.toLowerCase();
+
+        filteredRows = allRows.filter(row => {
+            const searchData = row.getAttribute('data-search');
+            const statusData = row.getAttribute('data-status');
+            
+            const matchesSearch = !searchTerm || searchData.includes(searchTerm);
+            const matchesStatus = !statusValue || statusData === statusValue;
+            
+            return matchesSearch && matchesStatus;
+        });
+
+        currentPage = 1;
+        updateTable();
+        updatePagination();
+    }
+
+    function updateTable() {
+        // Hide all rows
+        allRows.forEach(row => row.style.display = 'none');
+
+        // Calculate pagination
+        const startIndex = (currentPage - 1) * recordsPerPage;
+        const endIndex = startIndex + recordsPerPage;
+        const rowsToShow = filteredRows.slice(startIndex, endIndex);
+
+        // Show current page rows
+        rowsToShow.forEach((row, index) => {
+            row.style.display = '';
+            // Update row numbers
+            const firstCell = row.querySelector('td:first-child strong');
+            if (firstCell) {
+                firstCell.textContent = startIndex + index + 1;
+            }
+        });
+
+        // Update pagination info
+        const totalRecords = filteredRows.length;
+        const startRecord = totalRecords > 0 ? startIndex + 1 : 0;
+        const endRecord = Math.min(endIndex, totalRecords);
+        
+        document.getElementById('paginationInfo').innerHTML = 
+            `Showing <strong>${startRecord}-${endRecord}</strong> of <strong>${totalRecords}</strong> results`;
+    }
+
+    function updatePagination() {
+        const totalRecords = filteredRows.length;
+        const totalPages = Math.ceil(totalRecords / recordsPerPage);
+        const pagination = document.getElementById('pagination');
+        
+        pagination.innerHTML = '';
+
+        if (totalPages <= 1) return;
+
+        // Previous button
+        const prevLi = document.createElement('li');
+        prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+        prevLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">« Previous</a>`;
+        pagination.appendChild(prevLi);
+
+        // Page numbers
+        const startPage = Math.max(1, currentPage - 2);
+        const endPage = Math.min(totalPages, currentPage + 2);
+
+        if (startPage > 1) {
+            const firstLi = document.createElement('li');
+            firstLi.className = 'page-item';
+            firstLi.innerHTML = `<a class="page-link" href="#" data-page="1">1</a>`;
+            pagination.appendChild(firstLi);
+            
+            if (startPage > 2) {
+                const dotsLi = document.createElement('li');
+                dotsLi.className = 'page-item disabled';
+                dotsLi.innerHTML = `<span class="page-link">...</span>`;
+                pagination.appendChild(dotsLi);
+            }
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            const li = document.createElement('li');
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+            pagination.appendChild(li);
+        }
+
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                const dotsLi = document.createElement('li');
+                dotsLi.className = 'page-item disabled';
+                dotsLi.innerHTML = `<span class="page-link">...</span>`;
+                pagination.appendChild(dotsLi);
+            }
+            
+            const lastLi = document.createElement('li');
+            lastLi.className = 'page-item';
+            lastLi.innerHTML = `<a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>`;
+            pagination.appendChild(lastLi);
+        }
+
+        // Next button
+        const nextLi = document.createElement('li');
+        nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+        nextLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Next »</a>`;
+        pagination.appendChild(nextLi);
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', debounce(filterTable, 300));
+    statusFilter.addEventListener('change', filterTable);
+    
+    recordsPerPageSelect.addEventListener('change', function() {
+        recordsPerPage = parseInt(this.value);
+        currentPage = 1;
+        updateTable();
+        updatePagination();
+    });
+
+    // Pagination click handler
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('.page-link[data-page]')) {
+            e.preventDefault();
+            const page = parseInt(e.target.getAttribute('data-page'));
+            if (page > 0 && page <= Math.ceil(filteredRows.length / recordsPerPage)) {
+                currentPage = page;
+                updateTable();
+                updatePagination();
+                
+                // Smooth scroll to top of table
+                document.querySelector('.dataTableSec').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }
+        }
+    });
+
+    // Debounce function
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Initialize table
+    updateTable();
+    updatePagination();
+});
+</script>
+
+<script src="{% static 'admin_assets/libs/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/metismenu/metisMenu.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/simplebar/simplebar.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/node-waves/waves.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/feather-icons/feather.min.js' %}"></script>
+<!-- pace js -->
+<script src="{% static 'admin_assets/libs/pace-js/pace.min.js' %}"></script>
+<!-- apexcharts -->
+<script src="{% static 'admin_assets/libs/apexcharts/apexcharts.min.js' %}"></script>
+<!-- Plugins js-->
+<script src="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js' %}"></script>
+<script src="{% static 'admin_assets/js/pages/datatable-pages.init.js' %}"></script>
+<!-- dashboard init -->
+<script src="{% static 'admin_assets/js/pages/dashboard.init.js' %}"></script>
+<script src="{% static 'admin_assets/libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/app.js' %}"></script>
+
+<!-- data table -->
+<script src="{% static 'admin_assets/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/datatables.min.js' %}"></script>
+{% endblock %}

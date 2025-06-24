@@ -1,0 +1,72 @@
+{% load static %}
+
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover datatable">
+        <thead class="table-sticky-top">
+          <tr>
+            <th>S.No.</th>
+            <th>Property</th>
+            <th>Type</th>
+            <th>City</th>
+            <th>Scheduled Visits</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appartment in apartments %}
+          <tr data-property-id="{{ appartment.property_id }}">
+            <td>{{ forloop.counter }}</td>
+            <td>
+              <a href="javascript:void(0)" class="titlecolor">
+                <img class="avtarDP" src="{{ appartment.main_image.url }}" alt="img">
+                <span>{{ appartment.address }}</span>
+              </a>
+            </td>
+            <td>{{ appartment.type }}</td>
+            <td>{{ appartment.city }}</td>
+            <td>
+              <div class="d-flex align-items-center gap-1 badgechat" style="width: fit-content;">
+                <img class="smallicon" src="{% static 'admin_assets/images/icons/bookings.svg' %}" alt="ico">
+                <span>{{ appartment.visit_count|default:"0" }}</span>
+              </div>
+            </td>
+
+            <td>
+              <span class="badge status-badge 
+                {% if appartment.status == 'Sold' %}bg-success
+                {% elif appartment.status == 'On Sale' %}bg-primary
+                {% elif appartment.status == 'Booked' %}bg-warning text-dark
+                {% endif %}">
+                {{ appartment.status }}
+              </span>
+            </td>
+
+            <td>
+              {% if appartment.status != 'Booked' %}
+              <a class="btnedit btnnor" href="{% url 'edit_apartment' appartment.property_id %}">
+                <img class="smallicon" src="{% static 'admin_assets/images/icons/edit.svg' %}" alt="ico"> Edit
+              </a>
+              <a class="btndel btnnor" href="javascript:void(0)" data-property-id="{{ appartment.property_id }}">
+                <img class="smallicon" src="{% static 'admin_assets/images/icons/delete.svg' %}" alt="ico">
+              </a>
+              <a class="btnbook btnnor" href="javascript:void(0)" data-property-id="{{ appartment.property_id }}">
+                <i class="bi bi-box-arrow-in-right"></i> Book
+              </a>
+              {% else %}
+              <p>No actions available</p>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="8" class="text-center">No properties found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

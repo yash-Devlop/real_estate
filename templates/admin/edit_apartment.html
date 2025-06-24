@@ -1,0 +1,335 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Main Content Wrapper with proper spacing -->
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+      <!-- Page Title -->
+      <div class="row">
+        <div class="col-12">
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Edit Apartment</h4>
+            <div class="page-title-right">
+              <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'all_property' %}">Properties</a></li>
+                <li class="breadcrumb-item active">Edit Apartment</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Card -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title mb-0">{{ apartment.property_name }}</h4>
+            </div>
+            <div class="card-body">
+              <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Property Details Section -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h5 class="mb-3 text-primary">Property Details</h5>
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="property_name" class="form-label">Property Name</label>
+                    <input type="text" class="form-control" name="property_name" id="property_name" value="{{ apartment.property_name }}" required>
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <div class="input-group">
+                      <span class="input-group-text">₹</span>
+                      <input type="number" class="form-control" name="price" id="price" value="{{ apartment.price }}" required>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-4 mb-3">
+                    <label for="type" class="form-label">Type</label>
+                    <input type="text" class="form-control" name="type" id="type" value="{{ apartment.type }}" required>
+                  </div>
+                  
+                  <div class="col-md-4 mb-3">
+                    <label for="bedrooms" class="form-label">Bedrooms</label>
+                    <input type="number" class="form-control" name="bedrooms" id="bedrooms" value="{{ apartment.bedrooms }}" min="0" required>
+                  </div>
+                  
+                  <div class="col-md-4 mb-3">
+                    <label for="bathrooms" class="form-label">Bathrooms</label>
+                    <input type="number" class="form-control" name="bathrooms" id="bathrooms" value="{{ apartment.bathrooms }}" min="0" required>
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea class="form-control" name="address" id="address" rows="2" required>{{ apartment.address }}</textarea>
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" class="form-control" name="city" id="city" value="{{ apartment.city }}" required>
+                  </div>
+                  
+                  <div class="col-md-4 mb-3">
+                    <label for="floor" class="form-label">Floor</label>
+                    <input type="number" class="form-control" name="floor" id="floor" value="{{ apartment.floor }}">
+                  </div>
+                  
+                  <div class="col-md-4 mb-3">
+                    <label for="parking" class="form-label">Parking</label>
+                    <input type="number" class="form-control" name="parking" id="parking" value="{{ apartment.parking }}">
+                  </div>
+                  
+                  <div class="col-md-4 mb-3">
+                    <label for="area" class="form-label">Area (sq ft)</label>
+                    <input type="text" class="form-control" name="area" id="area" value="{{ apartment.area }}">
+                  </div>
+                  
+                  <div class="col-md-6 mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" name="status" id="status" required>
+                      <option value="On Sale" {% if apartment.status == 'On Sale' %}selected{% endif %}>On Sale</option>
+                      <option value="Sold" {% if apartment.status == 'Sold' %}selected{% endif %}>Sold</option>
+                      <option value="Booked" {% if apartment.status == 'Booked' %}selected{% endif %}>Booked</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Images Section -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h5 class="mb-3 text-primary">Images</h5>
+                  </div>
+                  
+                  <!-- Main Image -->
+                  <div class="col-12 mb-4">
+                    <div class="card border">
+                      <div class="card-header">
+                        <h6 class="card-title mb-0">Main Image</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="image-upload-container">
+                          <div class="current-image-wrapper">
+                            <img src="{{ apartment.main_image.url }}" alt="Main Image" class="img-fluid rounded shadow-sm current-image">
+                            <div class="image-overlay">
+                              <label for="replace_main_image" class="btn btn-primary btn-sm">
+                                <i class="fas fa-sync-alt me-1"></i>Replace Image
+                              </label>
+                            </div>
+                          </div>
+                          <input type="file" name="replace_main_image" id="replace_main_image" class="d-none" accept="image/*">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Brochure Images -->
+                  <div class="col-12 mb-4">
+                    <div class="card border">
+                      <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="card-title mb-0">Brochure Images</h6>
+                        <label class="btn btn-outline-primary btn-sm">
+                          <i class="fas fa-plus me-1"></i>Add Images
+                          <input type="file" name="new_brochure_images" multiple class="d-none" accept="image/*">
+                        </label>
+                      </div>
+                      <div class="card-body">
+                        <div class="row g-3">
+                          {% for img in apartment.brochure_images.all %}
+                          <div class="col-md-3 col-sm-4 col-6">
+                            <div class="brochure-image-wrapper">
+                              <img src="{{ img.image.url }}" class="img-fluid rounded shadow-sm brochure-image" alt="Brochure Image">
+                              <div class="image-overlay">
+                                <a href="{% url 'delete_brochure_image' img.id %}" class="btn btn-danger btn-sm delete-btn" onclick="return confirm('Are you sure you want to delete this image?')">
+                                  <i class="fas fa-trash"></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          {% empty %}
+                          <div class="col-12">
+                            <div class="text-center py-4 text-muted">
+                              <i class="fas fa-images fa-3x mb-3"></i>
+                              <p>No brochure images uploaded yet.</p>
+                            </div>
+                          </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="row">
+                  <div class="col-12">
+                    <div class="d-flex justify-content-end gap-2">
+                      <a href="{% url 'all_property' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Properties
+                      </a>
+                      <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-1"></i>Save Changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+  /* Main Content Spacing */
+  .main-content {
+    margin-left: 250px; /* Adjust based on your sidebar width */
+    padding-top: 70px; /* Adjust based on your header height */
+    min-height: calc(100vh - 70px);
+  }
+
+  .page-content {
+    padding: 24px;
+    padding-bottom: 80px; /* Space for footer */
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .main-content {
+      margin-left: 0;
+      padding-top: 60px;
+    }
+    .page-content {
+      padding: 16px;
+      padding-bottom: 80px;
+    }
+  }
+
+  /* Image Upload Styling */
+  .image-upload-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .current-image-wrapper,
+  .brochure-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  .current-image-wrapper:hover,
+  .brochure-image-wrapper:hover {
+    transform: scale(1.02);
+  }
+
+  .current-image {
+    max-width: 400px;
+    max-height: 300px;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .brochure-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .current-image-wrapper:hover .image-overlay,
+  .brochure-image-wrapper:hover .image-overlay {
+    opacity: 1;
+  }
+
+  .delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .brochure-image-wrapper:hover .delete-btn {
+    opacity: 1;
+  }
+
+  /* Form Styling */
+  .form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  /* Card Styling */
+  .card {
+    border: 1px solid #e3e6f0;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  }
+
+  .card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+  }
+
+  /* Section Headers */
+  .text-primary {
+    color: #007bff !important;
+  }
+
+  /* Breadcrumb */
+  .page-title-box {
+    padding: 1.5rem 0;
+  }
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: #6c757d;
+  }
+
+  /* Responsive Images */
+  @media (max-width: 576px) {
+    .current-image {
+      max-width: 100%;
+    }
+    
+    .brochure-image {
+      height: 150px;
+    }
+  }
+</style>
+
+<!-- FontAwesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnH4Pv1WjldoC8PczAvY9IvvVbrSU1IBjD/fLV9G5UplcHXl6Ao+IXq6zAUVspm0Xk7yN8+1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+{% endblock %}

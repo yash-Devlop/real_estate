@@ -1,0 +1,194 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+
+{% block links %}
+<!-- favicon start -->
+<link rel="icon" type="image/png" href="{% static 'admin_assets/images/favicon/favicon-96x96.png' %}" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="{% static 'admin_assets/images/favicon/favicon.svg' %}" />
+<link rel="shortcut icon" href="{% static 'admin_assets/images/favicon/favicon.ico' %}" />
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'admin_assets/images/favicon/apple-touch-icon.png' %}" />
+<meta name="apple-mobile-web-app-title" content="MyWebSite" />
+<link rel="manifest" href="{% static 'admin_assets/images/favicon/site.webmanifest' %}" />
+<!-- favicon end -->
+
+<!-- plugin css -->
+<!-- <link rel="stylesheet" href="{% static 'admin_assets/css/all.css' %}"> -->
+<link href="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css' %}"
+    rel="stylesheet" type="text/css" />
+
+<!-- preloader css -->
+<link rel="stylesheet" href="{% static 'admin_assets/css/preloader.min.css' %}" type="text/css" />
+
+<!-- Bootstrap Css -->
+<link href="{% static 'admin_assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+
+<!-- Icons Css -->
+<link href="{% static 'admin_assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+
+<!-- App Css-->
+<link href="{% static 'admin_assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="{% static 'admin_assets/css/AeonikFont.css' %}">
+
+<!-- datatable -->
+<link rel="stylesheet" href="{% static 'admin_assets/css/datatable.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- Page Title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0 font-size-18">{{ page_title|default:"Add Property" }}</h4>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item">{{ breadcrumb_parent|default:"Property" }}</li>
+                                <li class="breadcrumb-item active">{{ breadcrumb_active|default:"Add Property" }}</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inputformWrapper">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="tab-content withfixedHight" id="nav-tabContent">
+                                <!-- Overview Tab -->
+                                <div class="tab-pane fade active show">
+                                    <div class="formscrollWrapper">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label class="form-label">Property Name</label>
+                                                <input class="form-control" type="text" name="property_name" value="{{ property_name }}" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Category</label>
+                                                <select class="form-select" name="category" required>
+                                                    <option>-- Select Category --</option>
+                                                    <option value="Appartment">Appartment</option>
+                                                    <option value="Villa House">Villa House</option>
+                                                    <option value="Pent House">Pent House</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Total Flat Space</label>
+                                                <input class="form-control" type="text" name="area" value="{{ flat_space }}" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Address</label>
+                                                <input class="form-control" type="text" name="address" value="{{ address }}" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">City</label>
+                                                <input class="form-control" type="text" name="city" value="{{ city }}" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Pincode</label>
+                                                <input class="form-control" type="number" name="pincode" value="{{ pincode }}" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Price</label>
+                                                <input class="form-control" type="number" name="price" value="{{ price }}" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Main Image</label>
+                                                <input class="form-control" type="file" name="main_image" required>
+                                                <small>Size: 880px X 490px (Max: 300KB)</small>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Brochure Images</label>
+                                                <input class="form-control" type="file" name="brochure" multiple>
+                                                <small>(Max file size: 1MB each)</small>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h5>Flat Information</h5>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Bedrooms</label>
+                                                        <input class="form-control" type="number" name="bedrooms" value="{{ bedrooms }}" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Bathrooms</label>
+                                                        <input class="form-control" type="number" name="bathrooms" value="{{ bathrooms }}" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Floor</label>
+                                                        <input class="form-control" type="number" name="floor" value="{{ floor }}" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">Parking</label>
+                                                        <input class="form-control" type="number" name="parking" value="{{ parking }}" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+                            <!-- Submit Button -->
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <button class="btn-main" type="submit">Save Details</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- JAVASCRIPT -->
+<script src="{% static 'admin_assets/libs/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/metismenu/metisMenu.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/simplebar/simplebar.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/node-waves/waves.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/feather-icons/feather.min.js' %}"></script>
+
+<!-- Pace JS -->
+<script src="{% static 'admin_assets/libs/pace-js/pace.min.js' %}"></script>
+
+<!-- ApexCharts -->
+<script src="{% static 'admin_assets/libs/apexcharts/apexcharts.min.js' %}"></script>
+
+<!-- Plugins JS -->
+<script src="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+<script
+    src="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+<!-- Datatable pages init -->
+<script src="{% static 'admin_assets/js/pages/datatable-pages.init.js' %}"></script>
+
+<!-- Dashboard init -->
+<script src="{% static 'admin_assets/js/pages/dashboard.init.js' %}"></script>
+
+<!-- DataTables -->
+<script src="{% static 'admin_assets/libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+
+<!-- Core App JS -->
+<script src="{% static 'admin_assets/js/app.js' %}"></script>
+
+<!-- Extra DataTable JS -->
+<script src="{% static 'admin_assets/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/datatables.min.js' %}"></script>
+{% endblock %}

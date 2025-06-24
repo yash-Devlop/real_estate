@@ -1,0 +1,177 @@
+{% extends 'admin/base.html' %}
+
+{% load static %}
+{% block links %}
+  <!-- favicon start -->
+  <link rel="icon" type="image/png" href="{% static 'admin_assets/images/favicon/favicon-96x96.png' %}" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="{% static 'admin_assets/images/favicon/favicon.svg' %}" />
+  <link rel="shortcut icon" href="{% static 'admin_assets/images/favicon/favicon.ico' %}" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'admin_assets/images/favicon/apple-touch-icon.png' %}" />
+  <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+  <link rel="manifest" href="{% static 'admin_assets/images/favicon/site.webmanifest' %}" />
+  <!-- favicon end -->
+
+  <!-- plugin css -->
+  <!-- <link rel="stylesheet" href="{% static 'assets/css/all.css' %}"> -->
+  <link href="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css' %}" rel="stylesheet" type="text/css" />
+
+  <!-- preloader css -->
+  <link rel="stylesheet" href="{% static 'admin_assets/css/preloader.min.css' %}" type="text/css" />
+
+  <!-- Bootstrap Css -->
+  <link href="{% static 'admin_assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+
+  <!-- Icons Css -->
+  <link href="{% static 'admin_assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+
+  <!-- App Css-->
+  <link href="{% static 'admin_assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+
+  <!-- Aeonik Font -->
+  <link rel="stylesheet" href="{% static 'admin_assets/css/AeonikFont.css' %}">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{% static 'admin_assets/css/datatable.min.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+          <div class="container-fluid">
+            <!-- start page title -->
+            <div class="row">
+              <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                  <h4 class="mb-sm-0 font-size-18">Banner Management</h4>
+                  <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                      <li class="breadcrumb-item"><a href="javascript:void(0)">Frontend Management</a></li>
+                      <li class="breadcrumb-item active">Banner Management</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <div class="searchfilters">
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="card-body">
+                    <div class="form-group d-flex align-items-center gap-2">
+                      <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBanner">Add Banner</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <div class="dataTableSec listtable">
+              <div class="card">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover news-entry-view s">
+                      <thead class="table-sticky-top">
+                        <tr>
+                          <th width="10">S.No.</th>
+                          <th>Banner</th>
+                          <th>Status</th>
+                          <th width="210">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>
+                            <a href="javascript:void(0)" class="titlecolor">
+                              <img class="newsThumbnail" src="{% static 'admin_assets/images/slider/img1.jpg' %}" alt="img">
+                              <span>life-chanding</span>
+                            </a>
+                          </td>
+                          <td>
+                              <label class="switch small">
+                                  <input type="checkbox" checked>
+                                  <span class="slider"></span>
+                              </label>
+                          </td>
+                          <td> 
+                              <a class="btnedit btnnor" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addBanner"><img class="smallicon" src="{% static 'admin_assets/images/icons/edit.svg' %}" alt="ico"> Edit</a>
+                              <a class="btndel btnnor" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deletemodalsure"><img class="smallicon" src="{% static 'admin_assets/images/icons/delete.svg' %}" alt="ico"> </a>
+                          </td>
+                        </tr>
+  
+                        <tr>
+                          <td>2</td>
+                          <td>
+                            <a href="javascript:void(0)" class="titlecolor">
+                              <img class="newsThumbnail" src="{% static 'admin_assets/images/slider/slider-1-video-background-img.jpg' %}" alt="img">
+                              <span>extraordinary</span>
+                            </a>
+                          </td>
+                          <td>
+                              <label class="switch small">
+                                  <input type="checkbox" checked>
+                                  <span class="slider"></span>
+                              </label>
+                          </td>
+                          <td> 
+                              <a class="btnedit btnnor" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addBanner"><img class="smallicon" src="{% static 'admin_assets/images/icons/edit.svg' %}" alt="ico"> Edit</a>
+                              <a class="btndel btnnor" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deletemodalsure"><img class="smallicon" src="{% static 'admin_assets/images/icons/delete.svg' %}" alt="ico"> </a>
+                          </td>
+                        </tr>
+                        
+            
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!----Container fluid -->
+          </div>
+          
+            <!-- End Page-content -->
+            <footer class="footer">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-sm-6"> Copyright ©
+                      <script> document.write(new Date().getFullYear())</script> tti.tours | All Rights
+                      Reserved.
+                    </div>
+                  </div>
+                </div>
+              </footer>
+          </div>
+      <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+{% endblock %}
+
+{% block scripts %}
+    <!-- JAVASCRIPT -->
+<script src="{% static 'admin_assets/libs/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/metismenu/metisMenu.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/simplebar/simplebar.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/node-waves/waves.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/feather-icons/feather.min.js' %}"></script>
+<!-- pace js -->
+<script src="{% static 'admin_assets/libs/pace-js/pace.min.js' %}"></script>
+<!-- apexcharts -->
+<script src="{% static 'admin_assets/libs/apexcharts/apexcharts.min.js' %}"></script>
+<!-- Plugins js-->
+<script src="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+<script src="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js' %}"></script>
+<script src="{% static 'admin_assets/js/pages/datatable-pages.init.js' %}"></script>
+<!-- dashboard init -->
+<script src="{% static 'admin_assets/js/pages/dashboard.init.js' %}"></script>
+<script src="{% static 'admin_assets/libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/app.js' %}"></script>
+
+<!-- data table -->
+<script src="{% static 'admin_assets/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'admin_assets/js/datatables.min.js' %}"></script>
+
+{% endblock %}

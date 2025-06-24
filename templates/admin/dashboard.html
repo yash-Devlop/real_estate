@@ -1,0 +1,478 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block links %}
+<!-- favicon start -->
+<link rel="icon" type="image/png" href="{% static 'admin_assets/images/favicon/favicon-96x96.png' %}" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="{% static 'admin_assets/images/favicon/favicon.svg' %}" />
+<link rel="shortcut icon" href="{% static 'admin_assets/images/favicon/favicon.ico' %}" />
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'admin_assets/images/favicon/apple-touch-icon.png' %}" />
+<meta name="apple-mobile-web-app-title" content="MyWebSite" />
+<link rel="manifest" href="{% static 'admin_assets/images/favicon/site.webmanifest' %}" />
+<!-- favicon end -->
+<!-- plugin css -->
+<link rel="stylesheet" href="{% static 'admin_assets/css/all.css' %}">
+<link href="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css' %}"
+  rel="stylesheet" type="text/css" />
+<!-- preloader css -->
+<link rel="stylesheet" href="{% static 'admin_assets/css/preloader.min.css' %}" type="text/css" />
+<!-- Bootstrap Css -->
+<link href="{% static 'admin_assets/css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+<!-- Icons Css -->
+<link href="{% static 'admin_assets/css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+<!-- App Css-->
+<link href="{% static 'admin_assets/css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{% static 'admin_assets/css/AeonikFont.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+  <div class="page-content">
+    <div class="container-fluid">
+      <!-- start page title -->
+      <div class="row">
+        <div class="col-12">
+          <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Dashboard</h4>
+            <div class="page-title-right">
+              <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xl-4 col-lg-4 col-md-6">
+          <div class="card card-h-100 dashboardCard">
+            <div class="card-body" onclick="location.href = 'bookings.html';" type="button">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+
+                  <span class="new-user mb-3 title">New Bookings</span>
+                  <h3 class="mt-0" style="margin-bottom: 0px;"> <span class="counter"
+                      data-final-value="{{ new_bookings }}">0</span>
+                  </h3>
+
+                  <!-- <small>In Last 30 Days</small> -->
+                </div>
+                <div class="col-md-4 border2">
+                  <div class="dashcardImg">
+                    <img src="{% static 'admin_assets/images/icons/flat.svg' %}" alt="img" class="img-fluid">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-4 col-md-6">
+          <div class="card card-h-100 dashboardCard">
+            <div class="card-body" onclick="location.href = 'all-bookings.html';" type="button">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <span class="new-user mb-3 title">All Booking</span>
+                  <h4 class="mt-0" style="margin-bottom: 0px;"> <span class="counter"
+                      data-final-value="{{ total_booked }}">0</span>
+                  </h4>
+
+                  <!-- <small>In Last Week</small> -->
+                </div>
+                <div class="col-md-4 border2">
+                  <div class="dashcardImg">
+                    <img src="{% static 'admin_assets/images/icons/chat-color.svg' %}" alt="img" class="img-fluid">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-xl-4 col-lg-4 col-md-6">
+          <div class="card card-h-100 dashboardCard">
+            <div class="card-body" onclick="location.href = 'customers.html';" type="button">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+
+                  <span class="new-user mb-3 title">Total Customers</span>
+                  <h4 class="mt-0" style="margin-bottom: 0px;"> <span class="counter"
+                      data-final-value="{{ total_users }}">0</span>
+                  </h4>
+
+
+                  <!-- <small>In Last 10 Days</small> -->
+                </div>
+                <div class="col-md-4 border2">
+                  <div class="dashcardImg">
+                    <img src="{% static 'admin_assets/images/icons/users-color.svg' %}" alt="img" class="img-fluid">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <!-- end row-->
+
+
+      </div>
+
+      <div class="chartSec">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="cardTitle d-flex align-items-center justify-content-between mb-3">
+                  <h5 style="margin: 0px;">
+                    Monthly Booking Report
+                  </h5>
+                  <small>In Last 12 Months</small>
+                </div>
+                <div id="earningChart"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="cardTitle d-flex align-items-center justify-content-between mb-3">
+                  <h5 style="margin: 0px;">
+                    Monthly New Customer
+                  </h5>
+                  <small>In Last 12 Months</small>
+                </div>
+                <div id="requestChart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="dataTableSec">
+        <div class="card">
+          <div class="card-body">
+            <div class="cardTitle d-flex align-items-center justify-content-between mb-3">
+              <h5 style="margin: 0px;">
+                Recent Bookings
+              </h5>
+            </div>
+            <div class="table-responsive"><!-- id="example2" -->
+              <table class="table table-hover news-entry-view s">
+                <thead>
+                  <tr>
+                    <th width="">Name & Profile</th>
+                    <th>Contact Info</th>
+                    <th>Property</th>
+                    <th>Country</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <img class="avtarDP" src="{%static 'admin_assets/images/astrologers/1.png' %}" alt="img">
+                        <span>Pankaj Shastri</span>
+                      </a>
+                    </td>
+                    <td> 8882222888</td>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <span>Explore Delhi, Agra, Jaipur, Ranthambhore...</span>
+                      </a>
+                    </td>
+                    <td>Turkey</td>
+                    <td><a class="btnview btnnor" href="view-details.html"><img class="smallicon"
+                          src="{% static 'admin_assets/images/icons/view.svg' %}" alt="ico"> View</a></td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <img class="avtarDP" src="{% static 'admin_assets/images/astrologers/11.png' %}" alt="img">
+                        <span>Arti Sharma</span>
+                      </a>
+                    </td>
+                    <td> 8882222888</td>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <span>Explore Delhi, Agra, Jaipur, Ranthambhore...</span>
+                      </a>
+                    </td>
+                    <td>India</td>
+                    <td><a class="btnview btnnor" href="view-details.html"><img class="smallicon"
+                          src="{% static 'admin_assets/images/icons/view.svg' %}" alt="ico"> View</a></td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <img class="avtarDP" src="{% static 'admin_assets/images/astrologers/111.png' %}" alt="img">
+                        <span>Shudha Shukla</span>
+                      </a>
+                    </td>
+                    <td> 8882222888</td>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <span>Explore Delhi, Agra, Jaipur, Ranthambhore...</span>
+                      </a>
+                    </td>
+                    <td>Turkey</td>
+                    <td><a class="btnview btnnor" href="view-details.html"><img class="smallicon"
+                          src="{% static 'admin_assets/images/icons/view.svg' %}" alt="ico"> View</a></td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <img class="avtarDP" src="{% static 'admin_assets/images/astrologers/1111.png' %}" alt="img">
+                        <span>Bhawna Mishra</span>
+                      </a>
+                    </td>
+                    <td> 8882222888</td>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <span>Explore Delhi, Agra, Jaipur, Ranthambhore...</span>
+                      </a>
+                    </td>
+                    <td>India</td>
+                    <td><a class="btnview btnnor" href="view-details.html"><img class="smallicon"
+                          src="{% static 'admin_assets/images/icons/view.svg' %}" alt="ico"> View</a></td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <img class="avtarDP" src="{% static 'admin_assets/images/astrologers/1.png' %}" alt="img">
+                        <span>Pankaj Shastri</span>
+                      </a>
+                    </td>
+                    <td> 8882222888</td>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <span>Explore Delhi, Agra, Jaipur, Ranthambhore...</span>
+                      </a>
+                    </td>
+                    <td>Turkey</td>
+                    <td><a class="btnview btnnor" href="view-details.html"><img class="smallicon"
+                          src="{% static 'admin_assets/images/icons/view.svg' %}" alt="ico"> View</a></td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <img class="avtarDP" src="{% static 'admin_assets/images/astrologers/11.png' %}" alt="img">
+                        <span>Arti Sharma</span>
+                      </a>
+                    </td>
+                    <td> 8882222888</td>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <span>Explore Delhi, Agra, Jaipur, Ranthambhore...</span>
+                      </a>
+                    </td>
+                    <td>India</td>
+                    <td><a class="btnview btnnor" href="view-details.html"><img class="smallicon"
+                          src="{% static 'admin_assets/images/icons/view.svg' %}" alt="ico"> View</a></td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <img class="avtarDP" src="{% static 'admin_assets/images/astrologers/111.png' %}" alt="img">
+                        <span>Shudha Shukla</span>
+                      </a>
+                    </td>
+                    <td> 8882222888</td>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <span>Explore Delhi, Agra, Jaipur, Ranthambhore...</span>
+                      </a>
+                    </td>
+                    <td>Turkey</td>
+                    <td><a class="btnview btnnor" href="view-details.html"><img class="smallicon"
+                          src="{% static 'admin_assets/images/icons/view.svg' %}" alt="ico"> View</a></td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <img class="avtarDP" src="{% static 'admin_assets/images/astrologers/1111.png' %}" alt="img">
+                        <span>Bhawna Mishra</span>
+                      </a>
+                    </td>
+                    <td> 8882222888</td>
+                    <td>
+                      <a href="javascript:void(0)" class="titlecolor">
+                        <span>Explore Delhi, Agra, Jaipur, Ranthambhore...</span>
+                      </a>
+                    </td>
+                    <td>India</td>
+                    <td><a class="btnview btnnor" href="view-details.html"><img class="smallicon"
+                          src="{% static 'admin_assets/images/icons/view.svg' %}" alt="ico"> View</a></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    {% endblock %}
+
+    {% block scripts %}
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'admin_assets/libs/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'admin_assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'admin_assets/libs/metismenu/metisMenu.min.js' %}"></script>
+    <script src="{% static 'admin_assets/libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'admin_assets/libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'admin_assets/libs/feather-icons/feather.min.js' %}"></script>
+
+    <!-- pace js -->
+    <script src="{% static 'admin_assets/libs/pace-js/pace.min.js' %}"></script>
+
+    <!-- apexcharts -->
+    <script src="{% static 'admin_assets/libs/apexcharts/apexcharts.min.js' %}"></script>
+
+    <!-- Plugins js-->
+    <script
+      src="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+    <script
+      src="{% static 'admin_assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+    <script src="{% static 'admin_assets/js/pages/datatable-pages.init.js' %}"></script>
+
+    <!-- dashboard init -->
+    <script src="{% static 'admin_assets/js/pages/dashboard.init.js' %}"></script>
+    <script src="{% static 'admin_assets/libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'admin_assets/js/app.js' %}"></script>
+    <script>
+      $(function () {
+        function animateCounter(counterElement, finalValue, duration) {
+          let start = parseInt(counterElement.textContent);
+          const totalFrames = 120;
+          const increment = (finalValue - start) / totalFrames;
+
+          function updateCounter() {
+            start += increment;
+            counterElement.textContent = Math.floor(start);
+            if ((increment > 0 && start < finalValue) || (increment < 0 && start > finalValue)) {
+              requestAnimationFrame(updateCounter);
+            }
+          }
+
+          updateCounter();
+        }
+
+        $('.counter').each(function () {
+          const finalValue = parseInt($(this).data('final-value'));
+          animateCounter(this, finalValue, 5000);
+        });
+      });
+
+      $(function () {
+        $.ajax({
+          url: '/admin/bookings-monthly-data/',
+          method: 'GET',
+          success: function (response) {
+            var options = {
+              chart: {
+                type: 'line',
+                height: 350
+              },
+              series: [{
+                name: 'Bookings',
+                data: response.data
+              }],
+              xaxis: {
+                categories: response.labels
+              },
+              stroke: {
+                width: 2
+              },
+              markers: {
+                size: 5
+              },
+              colors: ['#2F4858']
+            };
+
+            var chart = new ApexCharts(document.querySelector("#earningChart"), options);
+            chart.render();
+          },
+          error: function () {
+            console.error("Failed to fetch booking data");
+          }
+        });
+      });
+
+
+      $(function () {
+        $.ajax({
+          url: "/admin/monthly-summary/",
+          method: "GET",
+          success: function (response) {
+            var options = {
+              chart: {
+                type: 'bar',
+                height: 350,
+                stacked: false
+              },
+              series: [
+                {
+                  name: 'Total Customers',
+                  data: response.customers
+                },
+                {
+                  name: 'Total Bookings',
+                  data: response.bookings
+                },
+                {
+                  name: 'Not Booking',
+                  data: response.not_booked
+                }
+              ],
+              xaxis: {
+                categories: response.months
+              },
+              colors: ['#00adb9', '#00ba27', '#fca307'],
+              legend: {
+                position: 'top'
+              },
+              plotOptions: {
+                bar: {
+                  horizontal: false,
+                  columnWidth: '50%'
+                }
+              },
+              dataLabels: {
+                enabled: false
+              }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#requestChart"), options);
+            chart.render();
+          },
+          error: function () {
+            alert("Failed to load monthly data.");
+          }
+        });
+      });
+    </script>
+    {% endblock %}

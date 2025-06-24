@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Apartelle</title>
+    
+    <!-- Bootstrap and Font Awesome CDNs -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom styles embedded directly -->
+    <style>
+        /* Define theme-specific variables */
+        :root {
+            --primary-brand-color: #EE423F; /* Apartelle Red from logo in new image */
+            --primary-dark-btn: #4a4a4a; /* Dark gray for main button */
+            --light-bg-body: #f7f7f7; /* Very light gray for body background */
+            --form-bg: #ffffff; /* White background for the form card */
+            --text-color-dark: #333333;
+            --text-color-light: #6c757d;
+            --border-color: #f0f0f0; /* Lighter border color for inputs */
+            --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Softer, subtle shadow */
+            --success-color: #28a745; /* Bootstrap green */
+            --danger-color: #dc3545; /* Bootstrap red */
+        }
+
+        /* Override base body background to match the form's isolated environment */
+        body {
+            background-color: var(--light-bg-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            /* Remove margins from base.html if any are affecting this */
+            margin: 0;
+        }
+
+        /* Main signup container card styling */
+        .signup-container {
+            background: var(--form-bg);
+            border-radius: 10px; 
+            box-shadow: var(--card-shadow);
+            max-width: 450px; /* Adjusted max-width to be similar to contact form */
+            width: 100%;
+            padding: 40px; 
+            margin: 50px auto; /* Center the form within the page flow */
+            /* Ensure it sits above any default full-width elements if any */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Adjustments for general text within the form to match theme */
+        .form-title {
+            text-align: center;
+            margin-bottom: 1.5rem; /* Slightly less margin */
+        }
+
+        .form-title h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-color-dark); /* Main title text color */
+            margin-bottom: 0.5rem;
+        }
+
+        /* Adjust the Apartelle logo icon to use the brand color */
+        .form-title h2 .fas {
+            color: var(--primary-brand-color); /* The red from the Apartelle logo */
+            margin-right: 0.5rem;
+        }
+
+        .form-title p {
+            color: var(--text-color-light);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem; /* Standard space between fields */
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color-dark);
+            margin-bottom: 0.5rem; /* Reduced space */
+            font-size: 0.9rem; /* Smaller, sharper labels */
+        }
+        .form-label .fas, .form-label .fab {
+            color: var(--text-color-light); /* Icons lighter */
+            margin-right: 0.6em;
+        }
+
+
+        .form-control {
+            border: 1px solid var(--border-color);
+            border-radius: 5px; /* Less rounded inputs */
+            padding: 10px 15px; /* Slightly smaller padding */
+            font-size: 0.95rem;
+            background-color: #fcfcfc; /* Very light background for inputs */
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-brand-color);
+            box-shadow: 0 0 0 2px rgba(238, 66, 63, 0.1); /* Lighter shadow on focus */
+            outline: none;
+        }
+
+        /* Validation feedback styling */
+        .is-invalid .form-control {
+            border-color: var(--danger-color);
+        }
+        .invalid-feedback {
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block; /* Ensures it's visible when error occurs */
+        }
+
+
+        /* Input group (for +91 prefix) */
+        .input-group .form-control {
+            border-left: 1px solid var(--border-color); /* Ensure border matches input */
+            border-radius: 5px; /* Match single input radius */
+        }
+
+        .input-group-text {
+            background-color: var(--light-bg-body); /* Lighter background for prefix */
+            border: 1px solid var(--border-color);
+            border-right: none;
+            border-radius: 5px 0 0 5px; 
+            padding: 10px 15px;
+            font-weight: 600;
+            color: var(--text-color-light);
+        }
+
+        .input-group:focus-within .input-group-text {
+            border-color: var(--primary-brand-color);
+        }
+
+        /* Send OTP button styling */
+        .btn-verify {
+            background: var(--primary-brand-color); /* Brand color for OTP send */
+            color: white;
+            border: none;
+            border-radius: 5px; /* Match inputs */
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem; /* Space from email input */
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: none; /* Flat style */
+            display: flex; /* Make it a flex container for text and spinner */
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* Space between text and spinner */
+        }
+
+        .btn-verify:hover {
+            background: #cc3936; /* Darker red on hover */
+            transform: none; /* No lift effect for flat look */
+            box-shadow: none;
+        }
+
+        .btn-verify:disabled {
+            background: var(--text-color-light);
+            cursor: not-allowed;
+        }
+        
+        .otp-container {
+            margin-top: 1.5rem; /* Consistent spacing */
+            padding: 20px;
+            background: var(--light-bg-body); /* Slightly darker background for OTP box */
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .otp-input {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.2rem; /* Reduced letter spacing */
+            padding: 12px 15px;
+        }
+        .otp-input:focus {
+            border-color: var(--primary-brand-color);
+            box-shadow: 0 0 0 2px rgba(238, 66, 63, 0.1);
+        }
+
+        .btn-success { /* Verify OTP button */
+            background-color: var(--primary-brand-color); /* Use brand color for success button */
+            border-color: var(--primary-brand-color);
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-weight: 600;
+            margin-top: 1rem;
+            box-shadow: none;
+            display: flex; /* Make it a flex container for text and spinner */
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* Space between text and spinner */
+        }
+
+        .btn-success:hover {
+            background-color: #cc3936;
+            border-color: #cc3936;
+            transform: none;
+            box-shadow: none;
+        }
+        .btn-success:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+
+        .btn-primary { /* Main Sign Up button */
+            background: var(--primary-dark-btn); /* Dark grey for main action */
+            border: none;
+            border-radius: 5px;
+            padding: 12px 25px; /* Slightly smaller for new theme */
+            font-size: 1rem;
+            font-weight: 700;
+            margin-top: 2rem; /* Consistent spacing */
+            box-shadow: none; /* Flat style */
+        }
+
+        .btn-primary:hover {
+            background: #333333; /* Darker grey on hover */
+            transform: none; /* No lift effect */
+            box-shadow: none;
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            border: 1px solid; /* Ensure border is visible */
+        }
+        .alert-success {
+            background: rgba(40, 167, 69, 0.08); /* Lighter background */
+            color: var(--success-color);
+            border-color: rgba(40, 167, 69, 0.2);
+        }
+        .alert-danger {
+            background: rgba(220, 53, 69, 0.08); /* Lighter background */
+            color: var(--danger-color);
+            border-color: rgba(220, 53, 69, 0.2);
+        }
+
+        /* Verification status text */
+        .verification-status {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+        .verification-status .fas {
+            font-size: 0.9rem;
+        }
+
+        /* Checkbox and links */
+        .form-check-input {
+            border-radius: 3px; /* Smaller square checkbox */
+            border: 1px solid var(--border-color);
+            margin-top: 0.2em;
+        }
+        .form-check-input:checked {
+            background-color: var(--primary-brand-color);
+            border-color: var(--primary-brand-color);
+        }
+        .form-check-input:focus {
+            box-shadow: 0 0 0 2px rgba(238, 66, 63, 0.1);
+        }
+        .form-check-label {
+            font-size: 0.9rem;
+        }
+
+        .text-primary {
+            color: var(--primary-brand-color) !important;
+            font-weight: 500;
+        }
+        .text-primary:hover {
+            color: #cc3936 !important;
+            text-decoration: underline;
+        }
+
+        /* Login link below button */
+        .text-center.mt-4 p {
+            color: var(--text-color-light); /* Lighter text color */
+            font-size: 0.95rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .signup-container {
+                padding: 30px 25px;
+                margin: 30px auto;
+            }
+            .form-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 25px 20px;
+                margin: 20px auto;
+            }
+            .form-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Spinner for buttons */
+        .loading-spinner {
+            display: none; /* Hidden by default */
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                <div class="signup-container">
+                    <div class="form-title">
+                        <h2 style="font-size: 2.8rem; margin-bottom: 1rem;">
+                            <i class="fas fa-building"></i> Apartelle
+                        </h2>
+                        <p>Create your account to discover luxury living.</p>
+                    </div>
+
+                    <!-- Django Messages Display (for standalone, this will be empty unless JS adds messages) -->
+                    <div id="messageContainer"></div>
+
+                    <form method="POST" id="signupForm" action="">
+                        <!-- In a real Django setup, this would be: {% csrf_token %} -->
+                         {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="id_name">
+                                <i class="fas fa-user"></i> Full Name
+                            </label>
+                            <input type="text" name="name" class="form-control" id="id_name" placeholder="Your Name" required value="">
+                            <div class="invalid-feedback" id="nameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="id_email">
+                                <i class="fas fa-envelope"></i> Email Address
+                            </label>
+                            <input type="email" name="email" class="form-control" id="id_email" placeholder="you@example.com" required value="">
+                            <button type="button" class="btn-verify" id="sendOtpBtn">
+                                <span class="btn-text">Send OTP to Email</span>
+                                <div class="loading-spinner"></div>
+                            </button>
+                            <div class="verification-status unverified" id="emailVerificationStatus">
+                                <i class="fas fa-times-circle"></i> Email not verified
+                            </div>
+                            <div class="invalid-feedback" id="emailError"></div>
+                        </div>
+
+                        <!-- OTP Container (associated with email field) -->
+                        <div class="otp-container" id="otpContainer">
+                            <label class="form-label mt-3" for="id_otp">
+                                <i class="fas fa-shield-alt"></i> Enter OTP
+                            </label>
+                            <input type="text" name="otp" class="form-control otp-input" id="id_otp" placeholder="Enter 6-digit OTP" maxlength="6" pattern="[0-9]{6}" title="Please enter a 6-digit OTP">
+                            <button type="button" class="btn btn-success mt-3 w-100" id="verifyOtpBtn">
+                                Verify OTP
+                                <span class="loading-spinner"></span>
+                            </button>
+                            <div class="text-center mt-3">
+                                <small class="text-muted">
+                                    Didn't receive OTP? 
+                                    <a href="#" id="resendOtpBtn" class="text-primary">Resend</a>
+                                    <span id="otpCountdown" class="ms-2"></span>
+                                </small>
+                            </div>
+                            <div class="invalid-feedback mt-2" id="otpError"></div>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="form-group">
+                            <label class="form-label" for="id_password">
+                                <i class="fas fa-lock"></i> Password
+                            </label>
+                            <input type="password" name="password" class="form-control" id="id_password" placeholder="Enter your password" required>
+                            <div class="invalid-feedback" id="passwordError"></div>
+                            <small class="form-text text-muted">Password must be at least 8 characters.</small>
+                        </div>
+
+                        <!-- Confirm Password Field -->
+                        <div class="form-group">
+                            <label class="form-label" for="id_confirm_password">
+                                <i class="fas fa-lock"></i> Confirm Password
+                            </label>
+                            <input type="password" name="confirm_password" class="form-control" id="id_confirm_password" placeholder="Confirm your password" required>
+                            <div class="invalid-feedback" id="confirmPasswordError"></div>
+                        </div>
+
+                        <!-- Phone Number Field (no OTP) -->
+                        <div class="form-group">
+                            <label class="form-label" for="id_phn">
+                                <i class="fas fa-phone"></i> Phone Number
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">+91</span>
+                                <input type="tel" name="phn" class="form-control" id="id_phn" placeholder="9876543210" pattern="[0-9]{10}" title="Please enter a 10-digit phone number" required value="">
+                            </div>
+                            <div class="invalid-feedback" id="phoneError"></div>
+                        </div>
+
+                        <!-- WhatsApp Number Field -->
+                        <div class="form-group">
+                            <label class="form-label" for="id_whatsapp">
+                                <i class="fab fa-whatsapp"></i> WhatsApp Number
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">+91</span>
+                                <input type="tel" name="whatsapp" class="form-control" id="id_whatsapp" placeholder="9876543210" pattern="[0-9]{10}" title="Please enter a 10-digit WhatsApp number" value="">
+                            </div>
+                            <div class="invalid-feedback" id="whatsappError"></div>
+                        </div>
+
+                        <!-- Confirm WhatsApp Field -->
+                        <div class="form-group">
+                            <label class="form-label" for="id_confirm_whatsapp">
+                                <i class="fab fa-whatsapp"></i> Confirm WhatsApp Number
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">+91</span>
+                                <input type="tel" name="confirm_whatsapp" class="form-control" id="id_confirm_whatsapp" placeholder="Confirm your WhatsApp number" pattern="[0-9]{10}" title="Please confirm your 10-digit WhatsApp number" value="">
+                            </div>
+                            <div class="invalid-feedback" id="confirmWhatsappError"></div>
+                        </div>
+
+                        <!-- Address Field -->
+                        <div class="form-group">
+                            <label class="form-label" for="id_addr">
+                                <i class="fas fa-map-marker-alt"></i> Address
+                            </label>
+                            <textarea name="addr" class="form-control" id="id_addr" rows="3" placeholder="Apartment, building, street, city, state, pincode" required></textarea>
+                            <div class="invalid-feedback" id="addressError"></div>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the <a href="#" class="text-primary">Terms and Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a>
+                                </label>
+                            </div>
+                            <div class="invalid-feedback" id="termsError"></div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary" id="signupSubmitBtn" disabled>
+                            Sign Up
+                        </button>
+
+                        <div class="text-center mt-4">
+                            <p>Already have an account? <a href="{% url 'user_login' %}" class="text-primary">Log In</a></p> {# Changed to 'login' from 'user_login' for consistency #}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupForm = document.getElementById('signupForm');
+            const emailInput = document.getElementById('id_email');
+            const sendOtpBtn = document.getElementById('sendOtpBtn');
+            const sendOtpBtnText = sendOtpBtn.querySelector('.btn-text');
+            const sendOtpSpinner = sendOtpBtn.querySelector('.loading-spinner');
+            const otpContainer = document.getElementById('otpContainer');
+            const otpInput = document.getElementById('id_otp');
+            const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+            const verifyOtpSpinner = verifyOtpBtn.querySelector('.loading-spinner'); // Added spinner for verify button
+            const resendOtpBtn = document.getElementById('resendOtpBtn');
+            const otpCountdown = document.getElementById('otpCountdown');
+            const emailVerificationStatus = document.getElementById('emailVerificationStatus');
+            const signupSubmitBtn = document.getElementById('signupSubmitBtn');
+            const agreeTermsCheckbox = document.getElementById('agreeTerms');
+            const phoneInput = document.getElementById('id_phn');
+            const whatsappInput = document.getElementById('id_whatsapp');
+            const confirmWhatsappInput = document.getElementById('id_confirm_whatsapp');
+            const addressInput = document.getElementById('id_addr');
+            
+            // Password fields
+            const passwordInput = document.getElementById('id_password');
+            const confirmPasswordInput = document.getElementById('id_confirm_password');
+
+            let isEmailVerified = false;
+            let countdownInterval;
+            const RESEND_OTP_TIME = 60; // seconds
+            let currentCountdown = RESEND_OTP_TIME;
+
+            // Get CSRF token for Django requests
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken'); // Now correctly fetches CSRF token for Django
+
+
+            function showMessage(type, text) {
+                const container = document.getElementById('messageContainer');
+                // Clear previous messages
+                container.innerHTML = ''; 
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type}`;
+                alertDiv.textContent = text;
+                container.appendChild(alertDiv);
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 5000); // Message disappears after 5 seconds
+            }
+
+            function toggleSignupButton() {
+                const nameFilled = document.getElementById('id_name').value.trim() !== '';
+                const emailFilled = emailInput.value.trim() !== '';
+                const passwordFilled = passwordInput.value.trim() !== '';
+                const confirmPasswordFilled = confirmPasswordInput.value.trim() !== '';
+                const phoneFilled = phoneInput.value.trim() !== '';
+                const addressFilled = addressInput.value.trim() !== '';
+
+                const passwordsMatch = passwordFilled && confirmPasswordFilled && (passwordInput.value === confirmPasswordInput.value) && passwordInput.value.length >= 8;
+
+                const whatsappMatch = whatsappInput.value.trim() === '' || (confirmWhatsappInput.value.trim() !== '' && whatsappInput.value === confirmWhatsappInput.value);
+
+                signupSubmitBtn.disabled = !(
+                    nameFilled &&
+                    emailFilled &&
+                    passwordFilled &&
+                    confirmPasswordFilled &&
+                    passwordsMatch &&
+                    phoneFilled &&
+                    addressFilled &&
+                    whatsappMatch &&
+                    isEmailVerified && 
+                    agreeTermsCheckbox.checked
+                );
+            }
+
+            function validateField(inputElement, errorElementId, validationFn, errorMessage) {
+                const errorDiv = document.getElementById(errorElementId);
+                const isValid = validationFn(inputElement.value);
+                if (!isValid) {
+                    inputElement.classList.add('is-invalid');
+                    inputElement.classList.remove('is-valid');
+                    if (errorDiv) errorDiv.textContent = errorMessage;
+                } else {
+                    inputElement.classList.remove('is-invalid');
+                    inputElement.classList.add('is-valid');
+                    if (errorDiv) errorDiv.textContent = '';
+                }
+                toggleSignupButton();
+                return isValid;
+            }
+
+            function isValidPhoneNumber(phone) {
+                return /^[0-9]{10}$/.test(phone);
+            }
+
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email) && !email.includes('..');
+            }
+
+            function isValidPassword(password) {
+                return password.length >= 8;
+            }
+
+            function passwordsDoMatch() {
+                return passwordInput.value === confirmPasswordInput.value;
+            }
+
+            function areWhatsappNumbersMatching() {
+                if (whatsappInput.value.trim() === '' && confirmWhatsappInput.value.trim() === '') {
+                    return true;
+                }
+                return whatsappInput.value === confirmWhatsappInput.value;
+            }
+
+            document.getElementById('id_name').addEventListener('input', function() {
+                validateField(this, 'nameError', (val) => val.trim().length > 2, 'Full Name must be at least 3 characters.');
+            });
+
+            emailInput.addEventListener('input', function() {
+                isEmailVerified = false;
+                updateEmailVerificationStatus();
+                otpContainer.classList.remove('show');
+                otpInput.value = '';
+                
+                clearInterval(countdownInterval);
+                otpCountdown.style.display = 'none';
+                resendOtpBtn.style.display = 'inline';
+
+                const emailIsValid = validateField(this, 'emailError', isValidEmail, 'Please enter a valid email address.');
+                sendOtpBtn.disabled = !emailIsValid;
+                sendOtpBtnText.style.display = 'block';
+                sendOtpSpinner.style.display = 'none';
+            });
+
+            passwordInput.addEventListener('input', function() {
+                const passwordValid = validateField(this, 'passwordError', isValidPassword, 'Password must be at least 8 characters long.');
+                if (passwordValid && confirmPasswordInput.value.trim() !== '') {
+                    validateField(confirmPasswordInput, 'confirmPasswordError', passwordsDoMatch, 'Passwords do not match.');
+                }
+            });
+
+            confirmPasswordInput.addEventListener('input', function() {
+                validateField(this, 'confirmPasswordError', passwordsDoMatch, 'Passwords do not match.');
+            });
+            
+            phoneInput.addEventListener('input', function() {
+                validateField(this, 'phoneError', isValidPhoneNumber, 'Please enter a valid 10-digit phone number.');
+            });
+
+            whatsappInput.addEventListener('input', function() {
+                validateField(this, 'whatsappError', isValidPhoneNumber, 'Please enter a valid 10-digit WhatsApp number.');
+                if (confirmWhatsappInput.value) {
+                    validateField(confirmWhatsappInput, 'confirmWhatsappError', areWhatsappNumbersMatching, 'WhatsApp numbers do not match.');
+                }
+            });
+
+            confirmWhatsappInput.addEventListener('input', function() {
+                validateField(this, 'confirmWhatsappError', areWhatsappNumbersMatching, 'WhatsApp numbers do not match.');
+            });
+
+            addressInput.addEventListener('input', function() {
+                validateField(this, 'addressError', (val) => val.trim().length > 10, 'Address is required and must be detailed.');
+            });
+
+            agreeTermsCheckbox.addEventListener('change', function() {
+                const termsErrorDiv = document.getElementById('termsError');
+                if (this.checked) {
+                    termsErrorDiv.textContent = '';
+                    termsErrorDiv.style.display = 'none';
+                } else {
+                    termsErrorDiv.textContent = 'You must agree to the Terms and Conditions.';
+                    termsErrorDiv.style.display = 'block';
+                }
+                toggleSignupButton();
+            });
+
+            // --- OTP Logic ---
+            function updateEmailVerificationStatus() {
+                if (isEmailVerified) {
+                    emailVerificationStatus.classList.remove('unverified');
+                    emailVerificationStatus.classList.add('verified');
+                    emailVerificationStatus.innerHTML = '<i class="fas fa-check-circle"></i> Email verified';
+                    sendOtpBtn.style.display = 'none';
+                    emailInput.readOnly = true;
+                } else {
+                    emailVerificationStatus.classList.remove('verified');
+                    emailVerificationStatus.classList.add('unverified');
+                    emailVerificationStatus.innerHTML = '<i class="fas fa-times-circle"></i> Email not verified';
+                    sendOtpBtn.style.display = 'flex';
+                    emailInput.readOnly = false;
+                    sendOtpBtn.disabled = !isValidEmail(emailInput.value);
+                    sendOtpBtnText.style.display = 'block';
+                    sendOtpSpinner.style.display = 'none';
+                }
+                toggleSignupButton();
+            }
+
+            function startCountdown() {
+                clearInterval(countdownInterval);
+                currentCountdown = RESEND_OTP_TIME;
+                resendOtpBtn.style.display = 'none';
+                otpCountdown.style.display = 'inline';
+                otpCountdown.textContent = `Resend in ${currentCountdown}s`;
+                sendOtpBtn.disabled = true;
+
+                countdownInterval = setInterval(() => {
+                    currentCountdown--;
+                    otpCountdown.textContent = `Resend in ${currentCountdown}s`;
+                    if (currentCountdown <= 0) {
+                        clearInterval(countdownInterval);
+                        resendOtpBtn.style.display = 'inline';
+                        otpCountdown.style.display = 'none';
+                        sendOtpBtn.disabled = !isValidEmail(emailInput.value);
+                        sendOtpBtnText.style.display = 'block';
+                        sendOtpSpinner.style.display = 'none';
+                    }
+                }, 1000);
+            }
+
+            // Send OTP to email (Actual AJAX call to Django backend)
+            sendOtpBtn.addEventListener('click', async function() {
+                const emailAddress = emailInput.value;
+
+                if (!isValidEmail(emailAddress)) {
+                    showMessage('danger', 'Please enter a valid email address before sending OTP.');
+                    emailInput.classList.add('is-invalid');
+                    return;
+                }
+                emailInput.classList.remove('is-invalid');
+
+                sendOtpBtnText.style.display = 'none';
+                sendOtpSpinner.style.display = 'block';
+                sendOtpBtn.disabled = true;
+
+                try {
+                    const response = await fetch('/api/send_otp_email/', { // Your Django API endpoint
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken 
+                        },
+                        body: JSON.stringify({ email: emailAddress })
+                    });
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        showMessage('success', data.message);
+                        otpContainer.classList.add('show');
+                        otpInput.value = '';
+                        otpInput.focus();
+                        startCountdown();
+                    } else {
+                        showMessage('danger', data.message);
+                    }
+                } catch (error) {
+                    console.error('Error sending OTP:', error);
+                    showMessage('danger', 'An error occurred while sending OTP. Please try again.');
+                } finally {
+                    sendOtpBtn.disabled = !isValidEmail(emailInput.value);
+                    sendOtpBtnText.style.display = 'block';
+                    sendOtpSpinner.style.display = 'none';
+                    toggleSignupButton();
+                }
+            });
+
+            // Verify OTP (Actual AJAX call to Django backend)
+            verifyOtpBtn.addEventListener('click', async function() {
+                const enteredOtp = otpInput.value;
+                const emailAddress = emailInput.value;
+
+                if (enteredOtp.length !== 6 || !/^[0-9]{6}$/.test(enteredOtp)) {
+                    showMessage('danger', 'Please enter a valid 6-digit OTP.');
+                    otpInput.classList.add('is-invalid');
+                    return;
+                }
+                otpInput.classList.remove('is-invalid');
+
+                verifyOtpBtn.disabled = true;
+                verifyOtpSpinner.style.display = 'inline-block'; // Show spinner
+
+                try {
+                    const response = await fetch('/api/verify_otp_email/', { // Your Django API endpoint
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken 
+                        },
+                        body: JSON.stringify({ email: emailAddress, otp: enteredOtp })
+                    });
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        isEmailVerified = true;
+                        showMessage('success', data.message);
+                        updateEmailVerificationStatus();
+                        otpContainer.classList.remove('show');
+                        clearInterval(countdownInterval);
+                    } else {
+                        isEmailVerified = false;
+                        showMessage('danger', data.message);
+                        otpInput.classList.add('is-invalid');
+                        updateEmailVerificationStatus();
+                    }
+                } catch (error) {
+                    console.error('Error verifying OTP:', error);
+                    showMessage('danger', 'An error occurred during OTP verification. Please try again.');
+                } finally {
+                    verifyOtpBtn.disabled = false;
+                    verifyOtpSpinner.style.display = 'none'; // Hide spinner
+                    toggleSignupButton();
+                }
+            });
+
+            resendOtpBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const emailAddress = emailInput.value;
+
+                if (!isValidEmail(emailAddress)) {
+                    showMessage('danger', 'Please enter a valid email address to resend OTP.');
+                    emailInput.classList.add('is-invalid');
+                    return;
+                }
+                emailInput.classList.remove('is-invalid');
+
+                sendOtpBtn.click(); // This will now trigger the actual fetch call
+            });
+
+            // Initial state setup
+            updateEmailVerificationStatus();
+            toggleSignupButton();
+            sendOtpBtn.disabled = !isValidEmail(emailInput.value);
+
+            signupForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission. JavaScript will handle AJAX.
+
+                let formValid = true;
+
+                // Re-validate all fields on submit to ensure consistency with backend
+                if (!validateField(document.getElementById('id_name'), 'nameError', (val) => val.trim().length > 2, 'Full Name is required and must be at least 3 characters.')) formValid = false;
+                if (!validateField(emailInput, 'emailError', isValidEmail, 'Please enter a valid email address.')) formValid = false;
+                
+                if (!validateField(passwordInput, 'passwordError', isValidPassword, 'Password must be at least 8 characters long.')) formValid = false;
+                if (!validateField(confirmPasswordInput, 'confirmPasswordError', passwordsDoMatch, 'Passwords do not match.')) formValid = false;
+
+                if (!validateField(phoneInput, 'phoneError', isValidPhoneNumber, 'Please enter a valid 10-digit phone number.')) formValid = false;
+                
+                const whatsappValid = whatsappInput.value.trim() === '' || validateField(whatsappInput, 'whatsappError', isValidPhoneNumber, 'Please enter a valid 10-digit WhatsApp number.');
+                const confirmWhatsappValid = confirmWhatsappInput.value.trim() === '' || validateField(confirmWhatsappInput, 'confirmWhatsappError', areWhatsappNumbersMatching, 'WhatsApp numbers do not match.');
+                if (!whatsappValid || !confirmWhatsappValid) formValid = false;
+
+                if (whatsappInput.value.trim() !== '' && confirmWhatsappInput.value.trim() === '') {
+                     const confirmWhatsappErrorDiv = document.getElementById('confirmWhatsappError');
+                     confirmWhatsappErrorDiv.textContent = 'Please confirm your WhatsApp number.';
+                     confirmWhatsappInput.classList.add('is-invalid');
+                     formValid = false;
+                } else if (whatsappInput.value.trim() !== '' && confirmWhatsappInput.value.trim() !== '' && !areWhatsappNumbersMatching()) {
+                    const confirmWhatsappErrorDiv = document.getElementById('confirmWhatsappError');
+                     confirmWhatsappErrorDiv.textContent = 'WhatsApp numbers do not match.';
+                     confirmWhatsappInput.classList.add('is-invalid');
+                     formValid = false;
+                }
+
+                if (!validateField(addressInput, 'addressError', (val) => val.trim().length > 10, 'Address is required and must be detailed.')) formValid = false;
+
+                if (!isEmailVerified) {
+                    showMessage('danger', 'Please verify your email address before signing up.');
+                    formValid = false;
+                }
+
+                if (!agreeTermsCheckbox.checked) {
+                    showMessage('danger', 'You must agree to the Terms and Conditions and Privacy Policy.');
+                    document.getElementById('termsError').textContent = 'You must agree to the Terms and Conditions.';
+                    document.getElementById('termsError').style.display = 'block';
+                    formValid = false;
+                } else {
+                    document.getElementById('termsError').textContent = '';
+                    document.getElementById('termsError').style.display = 'none';
+                }
+
+                if (formValid) {
+                    // If all client-side validations pass, submit the form to Django
+                    // The Django template will handle the {% csrf_token %} for POST submission
+                    signupForm.submit(); 
+                } else {
+                    const firstInvalid = document.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    showMessage('danger', 'Please correct the errors in the form.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

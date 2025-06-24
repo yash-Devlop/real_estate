@@ -1,0 +1,381 @@
+:root {
+    --primary-brand-color: #D64639; /* Reddish-orange from Apartelle logo */
+    --primary-dark-btn: #343a40; /* Dark grey/black for main button */
+    --light-bg: #f8f8f8; /* Very light gray background */
+    --form-bg: #ffffff; /* White background for the form card */
+    --text-color-dark: #333333;
+    --text-color-light: #6c757d;
+    --border-color: #e0e0e0;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Softer shadow */
+    --success-color: #28a745; /* Bootstrap green */
+    --danger-color: #dc3545; /* Bootstrap red */
+}
+
+/* Universal box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling: background, font, centering content */
+body {
+    font-family: 'Inter', sans-serif; /* Using Inter for a modern look */
+    background-color: var(--light-bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Main signup container card styling */
+.signup-container {
+    background: var(--form-bg);
+    border-radius: 12px; 
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    max-width: 500px; /* Max width for the form itself */
+    width: 100%;
+    padding: 40px; /* Padding inside the form card */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Space between form groups */
+}
+
+/* Title section styling */
+.form-title {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-title h2 {
+    color: var(--primary-dark-btn); /* Main title in dark color */
+    font-weight: 700;
+    font-size: 2.8rem; /* Larger for "Apartelle" */
+    margin-bottom: 1rem;
+}
+
+.form-title h2 .fas {
+    color: var(--primary-brand-color); /* Icon in brand color */
+    margin-right: 0.5rem; /* Space between icon and text */
+}
+
+.form-title p {
+    color: var(--text-color-light);
+    font-size: 1rem;
+}
+
+/* Form group (each input block) styling */
+.form-group {
+    margin-bottom: 0; /* Gap handles spacing */
+    position: relative;
+}
+
+/* Form label styling */
+.form-label {
+    font-weight: 600;
+    color: var(--text-color-dark);
+    margin-bottom: 0.75rem; 
+    display: block;
+    font-size: 0.95rem; /* Slightly smaller for cleaner look */
+}
+
+.form-label .fas, .form-label .fab {
+    margin-right: 0.5rem; /* Space for icons next to labels */
+    color: var(--text-color-light); /* Subtle icon color */
+}
+
+/* Form control (input fields) styling */
+.form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 8px; 
+    padding: 12px 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fcfcfc; /* Very light background */
+    width: 100%; /* Ensure it takes full width */
+}
+
+.form-control:focus {
+    border-color: var(--primary-brand-color);
+    box-shadow: 0 0 0 2px rgba(214, 70, 57, 0.15); 
+    outline: none;
+}
+
+/* Validation feedback styling */
+.form-control.is-invalid {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.15);
+}
+
+.form-control.is-valid {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.15);
+}
+
+.invalid-feedback {
+    color: var(--danger-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block; /* Ensures visibility when active */
+}
+
+
+/* Input group (for +91 prefix) styling */
+.input-group .form-control {
+    border-radius: 8px; /* Match single input radius */
+    border-left: 1px solid var(--border-color); /* Ensure left border */
+}
+
+.input-group-text {
+    background: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-right: none;
+    border-radius: 8px 0 0 8px; 
+    padding: 12px 15px;
+    font-weight: 600;
+    color: var(--text-color-light);
+}
+
+.input-group:focus-within .input-group-text {
+    border-color: var(--primary-brand-color);
+}
+
+/* Send OTP button styling */
+.btn-verify {
+    background: var(--primary-brand-color); 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px; 
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px; 
+    width: 100%;
+}
+
+.btn-verify:hover {
+    background: #b83d31; /* Darker shade on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(214, 70, 57, 0.2);
+}
+
+.btn-verify:disabled {
+    background: var(--text-color-light); 
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* OTP container and input styling */
+.otp-container {
+    display: none;
+    margin-top: 1.5rem; 
+    padding: 20px;
+    background: var(--light-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    animation: slideDown 0.3s ease-out forwards; 
+}
+
+.otp-container.show {
+    display: block;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.otp-input {
+    text-align: center;
+    font-size: 1.3rem; 
+    font-weight: 700;
+    letter-spacing: 0.3rem; 
+    padding: 15px;
+}
+
+.otp-input:focus {
+    border-color: var(--primary-brand-color);
+    box-shadow: 0 0 0 2px rgba(214, 70, 57, 0.15);
+}
+
+/* Verify OTP button styling */
+.btn-success { 
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 1.25rem; /* Space from OTP input */
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(40, 167, 69, 0.2);
+}
+
+/* Main Sign Up button styling */
+.btn-primary { 
+    background: var(--primary-dark-btn); 
+    border: none;
+    border-radius: 8px;
+    padding: 15px 30px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 2rem; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    background: #23272b;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:disabled {
+    background: var(--text-color-light);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Alert message styling */
+.alert {
+    border-radius: 8px; 
+    padding: 12px 16px;
+    margin-bottom: 1rem;
+    border: none;
+    font-size: 0.9rem;
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+/* Verification status text styling */
+.verification-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem; 
+    font-size: 0.9rem; 
+}
+
+.verification-status.verified {
+    color: var(--success-color);
+}
+
+.verification-status.unverified {
+    color: var(--danger-color);
+}
+
+/* Loading spinner styling */
+.loading-spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid white; /* Spinner color for btn-verify */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.btn-verify .loading-spinner {
+    margin-left: 8px; 
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Custom Checkbox styling */
+.form-check-input {
+    border-radius: 4px; 
+    border: 1px solid var(--border-color);
+    margin-top: 0.25em; /* Align with text */
+}
+.form-check-input:checked {
+    background-color: var(--primary-brand-color);
+    border-color: var(--primary-brand-color);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 2px rgba(214, 70, 57, 0.15);
+    outline: none;
+}
+
+.form-check-label {
+    color: var(--text-color-dark);
+    font-size: 0.95rem;
+}
+
+/* Link styling (like Terms and Conditions) */
+.text-primary {
+    color: var(--primary-brand-color) !important; 
+    font-weight: 500;
+}
+.text-primary:hover {
+    color: #b83d31 !important; 
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .signup-container {
+        padding: 30px 25px; 
+        border-radius: 10px;
+    }
+
+    .form-title h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+    .signup-container {
+        padding: 25px 20px;
+    }
+    .form-title h2 {
+        font-size: 1.8rem;
+    }
+    .btn-primary {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+    /* Adjustments for icons and spacing on very small screens */
+    .form-label .me-2 {
+        margin-right: 0.25rem !important;
+    }
+}

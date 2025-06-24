@@ -1,0 +1,618 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<head>
+    <style>
+        /* Your existing CSS starts here */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FF6B35;
+        }
+
+        .back-btn {
+            background: #FF6B35;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Grid */
+        .property-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* Image Gallery Section */
+        .image-gallery {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .main-image-container {
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .main-image:hover {
+            transform: scale(1.02);
+        }
+
+        .image-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 107, 53, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Thumbnail Gallery */
+        .thumbnail-gallery {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .thumbnail-gallery::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .thumbnail-gallery::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .thumbnail-gallery::-webkit-scrollbar-thumb {
+            background: #FF6B35;
+            border-radius: 3px;
+        }
+
+        .thumbnail {
+            min-width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .thumbnail:hover {
+            border-color: #FF6B35;
+            transform: translateY(-2px);
+        }
+
+        .thumbnail.active {
+            border-color: #FF6B35;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Property Details Section */
+        .property-details {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .property-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .property-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FF6B35;
+            margin-bottom: 25px;
+        }
+
+        .property-location {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Property Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .feature-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 4px solid #FF6B35;
+        }
+
+        .feature-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            display: block;
+        }
+
+        .feature-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Additional Info */
+        .additional-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: #FF6B35;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-primary:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: transparent;
+            color: #FF6B35;
+            padding: 15px 20px;
+            border: 2px solid #FF6B35;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-secondary:hover {
+            background: #FF6B35;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-sold {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .property-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .property-title {
+                font-size: 24px;
+            }
+
+            .property-price {
+                font-size: 28px;
+            }
+
+            .main-image {
+                height: 300px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+
+        /* Loading Animation */
+        .image-loading {
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hover Effects */
+        .property-details:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .image-gallery:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Custom Styles for Schedule Visit Form */
+        .schedule-visit-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-top: 30px; /* Space from property details */
+        }
+
+        .schedule-visit-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .schedule-visit-card .form-group {
+            margin-bottom: 20px;
+        }
+
+        .schedule-visit-card label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+
+        .schedule-visit-card input[type="date"],
+        .schedule-visit-card input[type="time"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            transition: border-color 0.2s ease;
+            -webkit-appearance: none; /* Remove default styling on some browsers */
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .schedule-visit-card input[type="date"]:focus,
+        .schedule-visit-card input[type="time"]:focus {
+            border-color: #FF6B35;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+        }
+
+        .schedule-visit-card input[type="date"][disabled],
+        .schedule-visit-card input[type="time"][disabled] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .schedule-visit-card .btn-schedule {
+            background: #FF6B35;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .schedule-visit-card .btn-schedule:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .schedule-visit-card .btn-schedule[disabled] {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.7;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .message-box {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
+        .message-box.success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        .message-box.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        
+        .login-prompt {
+            text-align: center;
+            margin-top: 15px;
+            color: #7f8c8d;
+            font-size: 15px;
+        }
+        .login-prompt a {
+            color: #FF6B35;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* Spinner for button */
+        .spinner {
+            display: none; /* Hidden by default */
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #fff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* FIX FOR FOOTER JUMPING - Added min-height */
+        .properties-box {
+            min-height: 400px; /* Adjust this value as needed based on your content */
+            transition: min-height 0.3s ease-out; /* Smooth transition for min-height change */
+        }
+    </style>
+</head>
+<body>
+  <div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="breadcrumb"><a href="{% url 'index' %}">Home</a> / Properties</span>
+          <h3>Properties</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section properties">
+    <div class="container">
+      <ul class="properties-filter">
+        <li>
+          <a class="is_active" href="#" data-filter="*">Show All</a>
+        </li>
+        <li>
+          <a href="#" data-filter=".adv">Apartment</a>
+        </li>
+        <li>
+          <a href="#" data-filter=".str">Villa House</a>
+        </li>
+        <li>
+          <a href="#" data-filter=".rac">Penthouse</a>
+        </li>
+      </ul> 
+      
+      <div class="row properties-box">
+          {% for property in properties %}
+          <div class="col-lg-4 col-md-6 align-self-center mb-30 properties-item {{ property.tags }}">
+              <div class="item">
+                  <a href="{% url 'apartment_detail' property.property_id %}"><img src="{{ property.main_image.url }}" alt="{{ property.property_name }}" ></a>
+                  <span class="category">{{ property.category }}</span>
+                  <h6>${{ property.price }}</h6>
+                  <h4><a href="{% url 'apartment_detail' property.property_id %}">{{ property.address }}</a></h4> 
+                  <ul>
+                      <li>Bedrooms: <span>{{ property.bedrooms }}</span></li>
+                      <li>Bathrooms: <span>{{ property.bathrooms }}</span></li>
+                      <li>Area: <span>{{ property.area }}</span></li> 
+                      <li>Floor: <span>{{ property.floor }}</span></li>
+                      <li>Parking: <span>{{ property.parking }}</span></li>
+                  </ul>
+                  <div class="main-button">
+                      <a href="{% url 'apartment_detail' property.property_id %}">Schedule a visit</a> 
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      
+      <div class="row">
+          <div class="col-lg-12">
+              <ul class="pagination">
+                  {% if properties.has_previous %}
+                      <li><a href="?page={{ properties.previous_page_number }}">«</a></li>
+                  {% endif %}
+                  {% for page_num in properties.paginator.page_range %}
+                      <li><a class="{% if page_num == properties.number %}is_active{% endif %}" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                  {% endfor %}
+                  {% if properties.has_next %}
+                      <li><a href="?page={{ properties.next_page_number }}">»</a></li>
+                  {% endif %}
+              </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var propertiesBox = document.querySelector('.properties-box');
+      
+      var iso = new Isotope(propertiesBox, {
+        itemSelector: '.properties-item',
+        layoutMode: 'fitRows'
+      });
+
+      var filterButtons = document.querySelectorAll('.properties-filter a');
+
+      filterButtons.forEach(function(button) {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          var filterValue = this.getAttribute('data-filter');
+
+          iso.arrange({ filter: filterValue });
+
+          filterButtons.forEach(function(btn) {
+            btn.classList.remove('is_active');
+          });
+          this.classList.add('is_active');
+        });
+      });
+    });
+  </script>
+</body>
+{% endblock %}
