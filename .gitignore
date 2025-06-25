@@ -3,3 +3,4 @@ myenv
 .venv
 __pycache__
 media
+migrations
