@@ -16,7 +16,7 @@ from django.contrib.auth.hashers import make_password
 # Create an admin record manually with admin_id and hashed password
 admin_id = <admin-id> 
 username = <your-username>
-password = make_password(<your-password>)  # Make sure to hash the password 
+password = make_password(<your-password>)  # Make sure to hash the password
 name = <your-name> 
 
 admin = AdminData(admin_id=admin_id, username=username, password=password, name=name)
