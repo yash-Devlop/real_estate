@@ -86,7 +86,7 @@ email_otp_store = {}
 def generate_otp():
     return str(random.randint(100000, 999999))
 
-@csrf_exempt
+# @csrf_exempt
 def send_email_otp(request):
     """
     API endpoint to send an OTP to the provided email address.
@@ -95,21 +95,12 @@ def send_email_otp(request):
     """
     if request.method == "POST":
         try:
-            # Parse the JSON data from the request body
             data = json.loads(request.body.decode('utf-8'))
             email = data.get("email")
-            print("email received from frontend:", email) # This will now print the email
+            print("email",  email)
 
             if not email:
                 return JsonResponse({"status": "error", "message": "Email is required."}, status=400)
-
-            # Basic email format validation (optional, frontend should also do this)
-            # from django.core.validators import validate_email
-            # from django.core.exceptions import ValidationError
-            # try:
-            #     validate_email(email)
-            # except ValidationError:
-            #     return JsonResponse({"status": "error", "message": "Invalid email format."}, status=400)
 
             if Users.objects.filter(email=email).exists():
                 return JsonResponse({"status": "error", "message": "This email is already registered. Please login or use a different email."}, status=409) # 409 Conflict
@@ -118,10 +109,9 @@ def send_email_otp(request):
             email_otp_store[email] = otp
 
             def remove_otp_after_delay(email_to_remove, otp_sent):
-                time.sleep(300) # 5 minutes
-                # Only remove if the OTP hasn't been replaced (e.g., by a new send OTP request)
+                time.sleep(300)
                 if email_to_remove in email_otp_store and email_otp_store[email_to_remove] == otp_sent:
-                    email_otp_store.pop(email_to_remove, None)
+                     email_otp_store.pop(email_to_remove, None)
 
             threading.Thread(target=remove_otp_after_delay, args=(email, otp), daemon=True).start()
 
@@ -135,14 +125,11 @@ def send_email_otp(request):
                 )
                 return JsonResponse({"status": "success", "message": "OTP sent to your email. Please check your inbox and spam folder."})
             except Exception as e:
-                # If email sending fails, remove the stored OTP to avoid stale data
                 email_otp_store.pop(email, None)
                 return JsonResponse({"status": "error", "message": f"Failed to send OTP: {str(e)}. Please try again."}, status=500)
 
-        except json.JSONDecodeError:
-            return JsonResponse({"status": "error", "message": "Invalid JSON in request body."}, status=400)
         except Exception as e:
-            return JsonResponse({"status": "error", "message": f"An unexpected error occurred: {str(e)}"}, status=400)
+            return JsonResponse({"status": "error", "message": f"Invalid request data: {str(e)}"}, status=400)
 
     return JsonResponse({"status": "error", "message": "Invalid request method."}, status=405) # 405 Method Not Allowed
 
@@ -154,7 +141,7 @@ def verify_email_otp_api(request):
     """
     if request.method == "POST":
         try:
-            data = request.POST # For form-urlencoded data from JS
+            data = data = json.loads(request.body.decode('utf-8')) # For form-urlencoded data from JS
             email = data.get("email")
             user_otp = data.get("otp")
 
@@ -223,7 +210,7 @@ def user_signup(request):
         if Users.objects.filter(email=email).exists():
             return JsonResponse({"status": "error", "message": "This email is already registered. Please login or use a different email."}, status=409)
 
-        if Users.objects.filter(phone_primary=full_phone_primary).exists():
+        if Users.objects.filter(phn=full_phone_primary).exists():
             return JsonResponse({"status": "error", "message": "This primary phone number is already registered. Please login or use a different phone number."}, status=409)
 
         try:
@@ -231,15 +218,15 @@ def user_signup(request):
                 name=name,
                 email=email,
                 password=make_password(password),
-                phone_primary=full_phone_primary,
-                phone_secondary=full_phone_secondary,
-                address=addr,
-                is_verified=True
+                phn=full_phone_primary,
+                whatsapp=full_phone_secondary,
+                addr=addr,
+                is_email_verified=True
             )
 
             email_otp_store.pop(email, None)
 
-            return JsonResponse({"status": "success", "message": "Account created successfully! You can now log in."})
+            return redirect("index")
 
         except IntegrityError:
             return JsonResponse({"status": "error", "message": "A user with this email or phone number already exists."}, status=409)

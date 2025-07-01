@@ -9,6 +9,7 @@ urlpatterns = [
     path('property/<uuid:property_id>/', views.apartment_detail_view, name='apartment_detail'),
     path('signup/', views.user_signup, name='signup'),
     path('api/send_otp_email/', views.send_email_otp, name='send_otp'),
+    path('api/verify_otp_email/', views.verify_email_otp_api, name='verify_otp'),
     path('login/', views.user_login, name='user_login'),
     path('user_logout/', views.user_logout, name='logout'),
 
